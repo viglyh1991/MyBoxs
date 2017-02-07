@@ -1,8 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Routing Map</title>
+   	<title>My Routing Map</title>
+  	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
+  	<link rel="stylesheet" href="https://unpkg.com/lrm-mapzen/dist/leaflet.routing.mapzen.css">
+  	<style>
+    	#map {
+      		height: 100%;
+      		width: 100%;
+      		position: absolute;
+   		}	
+  	</style>
 </head>
+
 <body>
+  <div id="map"></div>
+  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+  <script src="https://mapzen.com/tangram/0.7.0/tangram.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.0.0/leaflet-routing-machine.min.js"></script>
+  <script src="https://unpkg.com/lrm-mapzen/dist/lrm-mapzen.js"></script>
+  <script>
+    var map = L.map('map');
+    var layer = Tangram.leafletLayer({
+      scene: 'https://raw.githubusercontent.com/tangrams/cinnabar-style/gh-pages/cinnabar-style.yaml',
+      attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | <a href="http://www.openstreetmap.org/about" target="_blank">&copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
+    });
+    layer.addTo(map);
+    //map.setView([41.8758,-87.6189], 16);
+
+    // 天河大厦 23.1438840000,113.3279250000
+    // 中山大学附属第三医院 23.1403330000,113.3476970000
+
+    // 洛杉矶机场 33.9418740000,-118.4085840000
+    // 洛杉矶纪念体育场 34.0137070000,-118.2872410000
+    L.Routing.control({
+      waypoints: [
+        L.latLng(33.9418740000,-118.4085840000),
+        L.latLng(34.0137070000,-118.2872410000)
+      ],
+      lineOptions: {
+        styles: [ {color: 'white',   opacity: 0.8, weight: 12},
+                  {color: '#2676C6', opacity: 1,   weight: 6}
+      ]},
+
+      // Costing models:  auto 、 auto_shorter 、 bicycle 、 bus 、 hov 、 multimodal 、 pedestrian
+      // Automobile and bus costing options: are available for auto, auto_shorter, and bus costing methods.
+      // 
+      router: L.Routing.mapzen('mapzen-bypKLQr', {costing:'bus'}, {costing_options:{'use_bus':'1.0'}}),
+      formatter: new L.Routing.mapzenFormatter(),
+      summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>',
+      routeWhileDragging: false
+    }).addTo(map);
+  </script>
 </body>
 </html>

@@ -33,10 +33,14 @@
 
     // 洛杉矶机场 33.9418740000,-118.4085840000
     // 洛杉矶纪念体育场 34.0137070000,-118.2872410000
+    // 32.748 , -115.387
+
+    // LATTC/Ortho Institute 34.029708,-118.27322377468067
+    // heartz 34.054092, -118.2555
     L.Routing.control({
       waypoints: [
-        L.latLng(33.9418740000,-118.4085840000),
-        L.latLng(34.0137070000,-118.2872410000)
+        L.latLng(34.029708,-118.27322377468067),
+        L.latLng(34.054092, -118.2555)
       ],
       lineOptions: {
         styles: [ {color: 'white',   opacity: 0.8, weight: 12},
@@ -46,7 +50,29 @@
       // Costing models:  auto 、 auto_shorter 、 bicycle 、 bus 、 hov 、 multimodal 、 pedestrian
       // Automobile and bus costing options: are available for auto, auto_shorter, and bus costing methods.
       // 
-      router: L.Routing.mapzen('mapzen-bypKLQr', {costing:'bus'}, {costing_options:{'use_bus':'1.0'}}),
+      // router: L.Routing.mapzen('mapzen-bypKLQr', {costing:'multimodal'}, {costing_options:{'use_bus':'1.0'}}),
+
+ 	router: L.Routing.mapzen('mapzen-bypKLQr', {
+      	costing:'multimodal',
+      	// costing_options:{
+      	// 	auto:{
+      	// 		toll_booth_penalty:'10000'
+      	// 	}
+      	// },
+      	// directions_options:{ 
+      	// 	unit:'km'
+      	// } 
+      }),
+
+      // router: L.Routing.mapzen('mapzen-bypKLQr', {
+      // 	costing:'auto', 
+      // 	costing_options:{
+      // 		auto:{
+      // 			toll_both_penalty:'0.25'
+      // 		}
+      // 	},
+      // }),
+
       formatter: new L.Routing.mapzenFormatter(),
       summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>',
       routeWhileDragging: false
